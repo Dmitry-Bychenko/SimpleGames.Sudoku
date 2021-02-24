@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Serialization;
 
+[assembly: CLSCompliant(true)]
+
 namespace SimpleGames.Sudoku {
 
   //-------------------------------------------------------------------------------------------------------------------
@@ -184,18 +186,18 @@ namespace SimpleGames.Sudoku {
     /// Solutions
     /// </summary>
     public IEnumerable<Sudoku> Solutions() {
-      if (IsSolved) {
-        yield return this;
+      if (!IsValid)
+        yield break;
+
+      Sudoku current = Kernel();
+
+      if (current.IsSolved) {
+        yield return current;
 
         yield break;
       }
 
-      if (!IsValid)
-        yield break;
-
-      Sudoku current = Clone();
-
-      (int row, int column)[] cells = Empty();
+      (int row, int column)[] cells = current.Empty();
       int[] values = new int[cells.Length];
 
       for (int i = 0; i < values.Length && i >= 0;) {
@@ -566,8 +568,15 @@ namespace SimpleGames.Sudoku {
     public override int GetHashCode() {
       int result = 0;
 
-      for (int d = 0; d < 9; ++d)
-        result ^= m_Items[d][d];
+      unchecked {
+        int factor = 1;
+
+        for (int d = 0; d < 9; ++d) {
+          result += m_Items[d][d] * factor;
+
+          factor *= 10;
+        }
+      }
 
       return result;
     }
