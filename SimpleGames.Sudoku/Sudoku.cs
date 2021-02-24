@@ -16,7 +16,7 @@ namespace SimpleGames.Sudoku {
   public sealed class Sudoku : IEquatable<Sudoku>, ISerializable, ICloneable {
     #region Private Data
 
-    int[][] m_Items = Enumerable
+    readonly int[][] m_Items = Enumerable
       .Range(0, 9)
       .Select(_ => new int[9])
       .ToArray();
@@ -41,7 +41,7 @@ namespace SimpleGames.Sudoku {
       if (value == 0)
         return true;
 
-      bool IsUnique(IEnumerable<int> value) {
+      static bool IsUnique(IEnumerable<int> value) {
         HashSet<int> hs = new HashSet<int>();
 
         foreach (int v in value)
@@ -199,13 +199,13 @@ namespace SimpleGames.Sudoku {
       int[] values = new int[cells.Length];
 
       for (int i = 0; i < values.Length && i >= 0;) {
-        var at = cells[i];
+        var (row, col) = cells[i];
 
         int v = values[i] + 1;
 
         if (v > 9) {
           values[i] = 0;
-          current[at.row, at.column] = 0;
+          current[row, col] = 0;
 
           i -= 1;
 
@@ -214,10 +214,10 @@ namespace SimpleGames.Sudoku {
 
         values[i] = v;
 
-        if (!current.TrySet(at.row, at.column, v))
+        if (!current.TrySet(row, col, v))
           continue;
 
-        current[at.row, at.column] = v;
+        current[row, col] = v;
 
         i += 1;
 
@@ -259,17 +259,17 @@ namespace SimpleGames.Sudoku {
     public int this[(int row, int column) at] {
       get {
         if (at.row < 0 || at.row >= RowCount)
-          throw new ArgumentOutOfRangeException(nameof(at.row));
+          throw new ArgumentOutOfRangeException(nameof(at));
         if (at.column < 0 || at.column >= ColumnCount)
-          throw new ArgumentOutOfRangeException(nameof(at.column));
+          throw new ArgumentOutOfRangeException(nameof(at));
 
         return m_Items[at.row][at.column];
       }
       set {
         if (at.row < 0 || at.row >= RowCount)
-          throw new ArgumentOutOfRangeException(nameof(at.row));
+          throw new ArgumentOutOfRangeException(nameof(at));
         if (at.column < 0 || at.column >= ColumnCount)
-          throw new ArgumentOutOfRangeException(nameof(at.column));
+          throw new ArgumentOutOfRangeException(nameof(at));
         if (value < 0 || value > 9)
           throw new ArgumentOutOfRangeException(nameof(value));
 
@@ -449,7 +449,7 @@ namespace SimpleGames.Sudoku {
     /// </summary>
     public bool IsValid {
       get {
-        bool IsUnique(IEnumerable<int> value) {
+        static bool IsUnique(IEnumerable<int> value) {
           HashSet<int> hs = new HashSet<int>();
 
           foreach (int v in value)
