@@ -12,6 +12,8 @@
     <AssemblyOriginatorKeyFile>SimpleGames.Sudoku.snk.pfx</AssemblyOriginatorKeyFile>
     <PackageIcon>Sudoku.png</PackageIcon>
     <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
+    <Version>1.0.0.1</Version>
+    <PackageReleaseNotes>Better solver (Kernel based)</PackageReleaseNotes>
   </PropertyGroup>
 
   <ItemGroup>

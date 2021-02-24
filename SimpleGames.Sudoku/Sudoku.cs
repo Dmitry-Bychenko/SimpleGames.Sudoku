@@ -130,7 +130,7 @@ namespace SimpleGames.Sudoku {
 
       var field = board
         .Take(10)
-        .Select(line => (line ?? new int[0]).Take(10).ToArray())
+        .Select(line => (line ?? Array.Empty<int>()).Take(10).ToArray())
         .ToArray();
 
       if (field.Length != 9)
@@ -158,7 +158,7 @@ namespace SimpleGames.Sudoku {
 
       var field = board
         .Take(10)
-        .Select(line => (line ?? new char[0]).Take(10).ToArray())
+        .Select(line => (line ?? Array.Empty<char>()).Take(10).ToArray())
         .ToArray();
 
       if (field.Length != 9)
