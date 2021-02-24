@@ -122,6 +122,66 @@ namespace SimpleGames.Sudoku {
     public Sudoku() { }
 
     /// <summary>
+    /// Constructor from board
+    /// </summary>
+    public Sudoku(IEnumerable<IEnumerable<int>> board) {
+      if (board is null)
+        throw new ArgumentNullException(nameof(board));
+
+      var field = board
+        .Take(10)
+        .Select(line => (line ?? new int[0]).Take(10).ToArray())
+        .ToArray();
+
+      if (field.Length != 9)
+        throw new ArgumentException("9x9 board expected", nameof(board));
+      if (field.Any(line => line.Length != 9))
+        throw new ArgumentException("9x9 board expected", nameof(board));
+
+      for (int r = 0; r < field.Length; ++r)
+        for (int c = 0; c < field[r].Length; ++c) {
+          int v = field[r][c];
+
+          if (v < -1 || v > 9)
+            throw new ArgumentException("1..9 or 0, -1 expected only", nameof(board));
+
+          m_Items[r][c] = v < 0 ? 0 : v;
+        }
+    }
+
+    /// <summary>
+    /// Constructor from board
+    /// </summary>
+    public Sudoku(IEnumerable<IEnumerable<char>> board) {
+      if (board is null)
+        throw new ArgumentNullException(nameof(board));
+
+      var field = board
+        .Take(10)
+        .Select(line => (line ?? new char[0]).Take(10).ToArray())
+        .ToArray();
+
+      if (field.Length != 9)
+        throw new ArgumentException("9x9 board expected", nameof(board));
+      if (field.Any(line => line.Length != 9))
+        throw new ArgumentException("9x9 board expected", nameof(board));
+
+      string empty = " -\t.,?x_~0";
+
+      for (int r = 0; r < field.Length; ++r)
+        for (int c = 0; c < field[r].Length; ++c) {
+          char v = field[r][c];
+
+          if (v >= '0' && v <= '9')
+            m_Items[r][c] = v - '0';
+          else if (empty.Contains(v))
+            m_Items[r][c] = 0;
+          else
+            throw new ArgumentException("Invalid character", nameof(board));
+        }
+    }
+
+    /// <summary>
     /// Clone
     /// </summary>
     public Sudoku Clone() {
