@@ -28,7 +28,7 @@ namespace SimpleGames.Sudoku {
     #region Algorithm
 
     private (int row, int column)[] Empty() {
-      List<(int row, int column)> result = new List<(int row, int column)>();
+      List<(int row, int column)> result = new ();
 
       for (int r = 0; r < m_Items.Length; ++r)
         for (int c = 0; c < m_Items.Length; ++c) {
@@ -44,7 +44,7 @@ namespace SimpleGames.Sudoku {
         return true;
 
       static bool IsUnique(IEnumerable<int> value) {
-        HashSet<int> hs = new HashSet<int>();
+        HashSet<int> hs = new ();
 
         foreach (int v in value)
           if (v != 0 && !hs.Add(v))
@@ -185,7 +185,7 @@ namespace SimpleGames.Sudoku {
     /// Clone
     /// </summary>
     public Sudoku Clone() {
-      Sudoku result = new Sudoku();
+      Sudoku result = new ();
 
       for (int r = 0; r < m_Items.Length; ++r)
         for (int c = 0; c < m_Items.Length; ++c)
@@ -443,7 +443,7 @@ namespace SimpleGames.Sudoku {
       if (m_Items[row][column] != 0)
         return new int[] { m_Items[row][column] };
 
-      HashSet<int> excluded = new HashSet<int>();
+      HashSet<int> excluded = new ();
 
       foreach (int v in Row(row))
         excluded.Add(v);
@@ -454,7 +454,7 @@ namespace SimpleGames.Sudoku {
       foreach (int v in Square(SquareIndex(row, column)))
         excluded.Add(v);
 
-      HashSet<int> included = new HashSet<int>(Enumerable.Range(1, 9));
+      HashSet<int> included = new (Enumerable.Range(1, 9));
 
       included.ExceptWith(excluded);
 
@@ -512,7 +512,7 @@ namespace SimpleGames.Sudoku {
     public bool IsValid {
       get {
         static bool IsUnique(IEnumerable<int> value) {
-          HashSet<int> hs = new HashSet<int>();
+          HashSet<int> hs = new ();
 
           foreach (int v in value)
             if (v != 0 && !hs.Add(v))
