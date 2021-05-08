@@ -1,5 +1,7 @@
 # Sudoku Solver and Analyzer
 
+[![NuGet version (Sudoku Solver)](https://img.shields.io/nuget/v/SimpleGames.Sudoku.svg?style=flat-square)](https://www.nuget.org/packages/SimpleGames.Sudoku/)
+
 ## Demo
 
 ``` c#
